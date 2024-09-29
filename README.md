@@ -1,50 +1,89 @@
-# React + TypeScript + Vite
+# CSS Analyzer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## English
 
-Currently, two official plugins are available:
+This script displays the CSS styles applied to HTML elements using console.log. It performs the following tasks:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Parses CSS
+- Calculates specificity
+- Displays styles in order of specificity strength
 
-## Expanding the ESLint configuration
+Please note that this is a very rough implementation and the code quality is not optimized for production use.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Features
 
-- Configure the top-level `parserOptions` property like this:
+- CSS parsing
+- Specificity calculation
+- Inline style consideration
+- Hierarchical element analysis
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Usage
+
+```typescript
+import LabParser from './LabParser';
+
+// Call this after component mount or user action
+LabParser.parse();
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Example Output
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+For a `<span class="title">` element, the output might look like this:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+==========Styles applied to <span class="title">:
+  Selector: .second-box .title (Specificity: 0,0,2,0)
+    background-color: #e4ec78
+  Selector: .title (Specificity: 0,0,1,0)
+    font-size: 20px
+    margin-bottom: 1rem
+    background-color: #f5f5f5
+    padding: 10px
+  Selector: span (Specificity: 0,0,0,1)
+    font-weight: bold
+```
+
+## 日本語
+
+このスクリプトは、HTMLエレメントに適用されるCSSスタイルを`console.log`を使用して表示します。主な機能は以下の通りです：
+
+- CSSのパース
+- 詳細度（specificity）の計算
+- 詳細度の強さ順にスタイルを表示
+
+注意：これは非常に粗い実装であり、コードの品質は本番使用に最適化されていません。
+
+### 特徴
+
+- CSSのパース
+- 詳細度の計算
+- インラインスタイルの考慮
+- 階層的な要素分析
+
+### 使用方法
+
+```typescript
+import LabParser from './LabParser';
+
+// コンポーネントのマウント後やユーザーアクションに応じて呼び出す
+LabParser.parse();
+```
+
+### 出力例
+
+`<span class="title">` 要素に対する出力は以下のようになります：
+
+```
+==========Styles applied to <span class="title">:
+  Selector: .second-box .title (Specificity: 0,0,2,0)
+    background-color: #e4ec78
+  Selector: .title (Specificity: 0,0,1,0)
+    font-size: 20px
+    margin-bottom: 1rem
+    background-color: #f5f5f5
+    padding: 10px
+  Selector: span (Specificity: 0,0,0,1)
+    font-weight: bold
+```
+
+この出力例は、適用されるスタイルが詳細度の高い順に表示されていることを示しています。各セレクタの詳細度も表示され、どのスタイルがどの理由で適用されているかが分かりやすくなっています。
